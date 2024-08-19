@@ -1,0 +1,57 @@
+import random
+crops_data = {
+    "Wheat": {"soil_type": "Loam", "water_requirement": "Medium", "season": "Winter", "diseases": ["Rust", "Blight"]},
+    "Rice": {"soil_type": "Clay", "water_requirement": "High", "season": "Monsoon", "diseases": ["Blast", "Sheath Rot"]},
+    "Maize": {"soil_type": "Sandy", "water_requirement": "Low", "season": "Summer", "diseases": ["Downy Mildew", "Leaf Blight"]},
+    "Soybean": {"soil_type": "Clay", "water_requirement": "Medium", "season": "Summer", "diseases": ["Root Rot", "Leaf Spot"]},
+}
+soil_test_results = {
+    "pH": 6.5,
+    "nitrogen": "Low",
+    "phosphorus": "Medium",
+    "potassium": "High"
+}
+def recommend_crops(soil_type, water_availability, season):
+    print("\n--- Crop Recommendation ---")
+    recommended_crops = []
+    for crop, details in crops_data.items():
+        if details["soil_type"] == soil_type and details["water_requirement"] == water_availability and details["season"] == season:
+            recommended_crops.append(crop)
+    if recommended_crops:
+        print(f"Based on your soil type ({soil_type}), water availability ({water_availability}), and season ({season}), we recommend planting: {', '.join(recommended_crops)}")
+    else:
+        print("No suitable crops found for the given conditions.")
+def analyze_soil(soil_test_results):
+    print("\n--- Soil Analysis ---")
+    print(f"Soil pH level: {soil_test_results['pH']}")
+    print(f"Nitrogen level: {soil_test_results['nitrogen']}")
+    print(f"Phosphorus level: {soil_test_results['phosphorus']}")
+    print(f"Potassium level: {soil_test_results['potassium']}")
+    if soil_test_results["pH"] < 6.0:
+        print("Soil is too acidic, consider adding lime.")
+    elif soil_test_results["pH"] > 7.5:
+        print("Soil is too alkaline, consider adding sulfur.")
+    else:
+        print("Soil pH is within the optimal range.")
+def identify_disease(crop, symptoms):
+    print("\n--- Disease Identification ---")
+    crop_diseases = crops_data.get(crop, {}).get("diseases", [])
+    if not crop_diseases:
+        print(f"No data available for crop: {crop}")
+        return
+    identified_diseases = [disease for disease in crop_diseases if any(symptom.lower() in disease.lower() for symptom in symptoms)]
+    if identified_diseases:
+        print(f"The symptoms you provided suggest the following diseases in {crop}: {', '.join(identified_diseases)}")
+    else:
+        print(f"No matching diseases found for the provided symptoms in {crop}.")
+if __name__ == "__main__":
+    print("Welcome to the Crop and Soil Management System!")
+    analyze_soil(soil_test_results)
+    soil_type = input("\nEnter your soil type (Loam, Clay, Sandy): ")
+    water_availability = input("Enter water availability (Low, Medium, High): ")
+    season = input("Enter current season (Winter, Monsoon, Summer): ")
+    recommend_crops(soil_type, water_availability, season)
+    crop = input("\nEnter the crop for disease identification: ")
+    symptoms = input("Enter the symptoms observed (comma-separated): ").split(',')
+    identify_disease(crop, symptoms)
+    print("\nThank you for using the Crop and Soil Management System!")
